@@ -1,0 +1,29 @@
+{
+  "name": "azuretest",
+  "version": "1.0.0",
+  "description": "Azure Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "dev": "set NODE_ENV=development && tsnd --respawn app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheusDiass/azuretest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatheusDiass/azuretest/issues"
+  },
+  "homepage": "https://github.com/MatheusDiass/azuretest#readme",
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.4"
+  }
+}
