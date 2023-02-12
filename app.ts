@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.get('/', (req, res) => {
+    console.log(process.env.VITE_EMAIL_PROVIDER_USER);
     res.send(`My name is ${process.env.NAME}`);
 });
 
