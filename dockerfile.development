@@ -1,0 +1,18 @@
+FROM node:16 AS development
+
+#Chokidar used to monitor files
+ENV CHOKIDAR_USEPOLLING=true
+
+#Working Dir - Container
+WORKDIR /usr/src/app
+
+#Copy source files
+COPY . .
+
+#Install modules
+RUN npm i
+
+#Expose the api port
+EXPOSE 8000
+
+CMD ["npm", "run", "dev"]
