@@ -1,9 +1,13 @@
 import dotenv from "dotenv";
-import { app } from "./src";
+import { Request, Response } from "express";
+import app from "./src";
 import "isomorphic-fetch";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import { ClientSecretCredential } from "@azure/identity";
+import {
+  ClientSecretCredential,
+  UsernamePasswordCredential,
+} from "@azure/identity";
 
 dotenv.config({ path: "./.env.development" });
 
@@ -20,18 +24,23 @@ type UserAzureAD = {
   mail: string | undefined;
 };
 
+type UserSignIn = {
+  username: string;
+  password: string;
+};
+
 app.get("/", (req, res) => {
   res.send(`My name is ${process.env.NAME}`);
 });
 
-app.get("/users", async (req, res) => {
+app.get("/users", async (req: Request, res: Response) => {
   try {
     //App credencial
     const tenantId = process.env.TENANT_ID || "";
     const clientId = process.env.CLIENT_ID || "";
     const clientSecret = process.env.CLIENT_SECRET || "";
 
-    //Create client credential 
+    //Create client credential
     const credential = new ClientSecretCredential(
       tenantId,
       clientId,
@@ -74,7 +83,33 @@ app.get("/users", async (req, res) => {
 
     res.json(usersMap);
   } catch (err: any) {
+    res.send(err);
+  }
+});
+
+app.post("/signin", async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+
+    //App credencial
+    const tenantId = process.env.TENANT_ID || "";
+    const clientId = process.env.CLIENT_ID || "";
+
+    //Create user credential using app credential
+    const credential = new UsernamePasswordCredential(
+      tenantId,
+      clientId,
+      username,
+      password
+    );
+
+    const token = await credential.getToken(['profile']);
+
+    res.json({ token });
+  } catch (err: any) {
     console.log(err);
+    
+    res.send(err);
   }
 });
 
